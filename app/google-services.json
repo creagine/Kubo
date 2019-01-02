@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "531368967042",
+    "firebase_url": "https://kubo-f2861.firebaseio.com",
+    "project_id": "kubo-f2861",
+    "storage_bucket": "kubo-f2861.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:531368967042:android:4edcd54f468b248d",
+        "android_client_info": {
+          "package_name": "com.kubo.kubo_fix"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "531368967042-punjuesm1u3h0tnblmbldod6q6ikkj7b.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kubo.kubo_fix",
+            "certificate_hash": "cab926bedf47abbdb2d1017abb1dcc1c71a2d2a2"
+          }
+        },
+        {
+          "client_id": "531368967042-6ue5ifa65r3gukc2vimrjtfd39spn8ek.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBAe_6k9YIEzzt1Vn9iZYMK0XMEYNvjlPs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "531368967042-6ue5ifa65r3gukc2vimrjtfd39spn8ek.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
