@@ -21,6 +21,7 @@ import com.kubo.kubo_fix.Model.Barberman;
 import com.kubo.kubo_fix.Model.Barbershop;
 import com.kubo.kubo_fix.Model.Order;
 import com.kubo.kubo_fix.Model.Service;
+import com.kubo.kubo_fix.Model.User;
 
 public class NotaActivity extends AppCompatActivity {
 
@@ -36,7 +37,8 @@ public class NotaActivity extends AppCompatActivity {
     TextView txtTotal;
     Button btnOrder, btnCancel;
 
-    String totalharga, jadwal, barberman, service, barbershop;
+    String atasnama, userId, totalharga, jadwal, barberman, service, barbershop, phoneBarbershop,
+            phoneUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +48,14 @@ public class NotaActivity extends AppCompatActivity {
         setTitle("Order List Anda");
         Log.e("Nota", "Order List");
 
+        //memulai firebase database
+        mFirebaseInstance = FirebaseDatabase.getInstance();
+
+        //get current user
+        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        atasnama = user.getEmail();
+        userId = user.getUid();
+
         txtBarbershop = findViewById(R.id.showBarbershop);
         txtService = findViewById(R.id.showService);
         txtBarberman = findViewById(R.id.showBarberman);
@@ -53,9 +63,6 @@ public class NotaActivity extends AppCompatActivity {
         txtTotal = findViewById(R.id.showBiaya);
         btnOrder = findViewById(R.id.buttonOrder);
         btnCancel = findViewById(R.id.buttonCancel);
-
-        //memulai firebase database
-        mFirebaseInstance = FirebaseDatabase.getInstance();
 
         getData();
 
@@ -97,16 +104,12 @@ public class NotaActivity extends AppCompatActivity {
         // get reference to 'order'
         orderReference = mFirebaseInstance.getReference("Order");
 
-        //get current user
-        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
         String idOrder = orderReference.push().getKey();
-        String atasnama = user.getEmail();
-        String userId = user.getUid();
         String idBarbershop = Common.barbershopSelected;
         String status = "Waiting for approval";
 
-        Order orderdata = new Order(idOrder, userId, atasnama, idBarbershop, barbershop, barberman, service, totalharga, jadwal, status);
+        Order orderdata = new Order(idOrder, userId, atasnama, idBarbershop, barbershop, barberman,
+                service, totalharga, jadwal, status, phoneBarbershop, phoneUser);
 
         orderReference.child(Common.barbershopSelected).child(idOrder).setValue(orderdata);
         usersOrderReference.child(userId).child(idOrder).setValue(orderdata);
@@ -186,6 +189,28 @@ public class NotaActivity extends AppCompatActivity {
                         Barbershop currentBarbershop = dataSnapshot.getValue(Barbershop.class);
 
                         barbershop = currentBarbershop.getNama();
+                        phoneBarbershop = currentBarbershop.getPhone();
+
+                        txtBarbershop.setText(barbershop);
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+        // get reference to 'user'
+        barbershopReference = mFirebaseInstance.getReference("Users");
+        barbershopReference.child(userId)
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        User currentUser = dataSnapshot.getValue(User.class);
+
+                        phoneUser = currentUser.getPhone();
+
                         txtBarbershop.setText(barbershop);
 
                     }

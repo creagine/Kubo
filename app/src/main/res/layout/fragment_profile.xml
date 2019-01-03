@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:gravity="center"
     android:orientation="vertical">
 
@@ -13,10 +14,10 @@
         android:layout_height="120dp"
         android:background="@color/colorPrimary"
         android:gravity="center"
-        android:text="Name"
+        android:text="N"
         android:textAlignment="center"
         android:textColor="@color/btn_login_bg"
-        android:textSize="18sp"
+        android:textSize="55sp"
         android:textStyle="bold" />
 
     <TextView
@@ -27,7 +28,7 @@
         android:layout_centerHorizontal="true"
         android:gravity="center"
         android:hint="@string/email_id"
-        android:textSize="30sp"
+        android:textSize="24sp"
         android:textStyle="bold|italic" />
 
     <TextView
@@ -40,7 +41,7 @@
 
     <EditText
         android:id="@+id/old_email"
-        android:layout_width="368dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/password"
         android:layout_centerHorizontal="true"
@@ -147,7 +148,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:background="@color/colorPrimary"
+        app:backgroundTint="@color/btn_logut_bg"
         android:text="@string/btn_sign_out"
         android:textColor="@android:color/white"
         android:textStyle="bold" />

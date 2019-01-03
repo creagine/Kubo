@@ -56,13 +56,13 @@ public class BarbershopActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recycler_service);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        loadService();
-
         txtNama = findViewById(R.id.TextViewNamaBarbershop);
         txtAlamat = findViewById(R.id.textViewAlamatBarbershop);
         imgBarbershop = findViewById(R.id.imageViewBarbershop);
         btnBooking = findViewById(R.id.buttonBooking);
         btnAntrian = findViewById(R.id.buttonCheckAntrian);
+
+        loadService();
 
         getBarbershop(Common.barbershopSelected);
 
@@ -89,7 +89,7 @@ public class BarbershopActivity extends AppCompatActivity {
     }
 
     private void getBarbershop(String idBarbershop) {
-        barbershopReference.child(idBarbershop).addValueEventListener(new ValueEventListener() {
+        barbershopReference.child(idBarbershop).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Barbershop currentBarbershop = dataSnapshot.getValue(Barbershop.class);

@@ -18,8 +18,10 @@ import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
+import com.kubo.kubo_fix.Common.Common;
 import com.kubo.kubo_fix.Interface.ItemClickListener;
 import com.kubo.kubo_fix.Model.Order;
+import com.kubo.kubo_fix.OrderDetailActivity;
 import com.kubo.kubo_fix.OrderHistoryActivity;
 import com.kubo.kubo_fix.R;
 import com.kubo.kubo_fix.ViewHolder.OrderViewHolder;
@@ -92,8 +94,12 @@ public class OrderFragment extends Fragment {
                     @Override
                     public void onClick(View view, int position, boolean isLongClick) {
 
-//                        Intent serviceList = new Intent(getActivity(), ServiceListActivity.class);
-//                        startActivity(serviceList);
+                        Intent orderList = new Intent(getActivity(), OrderDetailActivity.class);
+
+                        //When user select shop, we will save shop id to select service of this shop
+                        Common.orderSelected = adapter.getRef(position).getKey();
+
+                        startActivity(orderList);
 
                     }
                 });

@@ -23,7 +23,7 @@ public class JadwalBookingActivity extends AppCompatActivity {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_jadwal_booking);
 
-        setTitle("Booking");
+        setTitle("Book Time");
         Log.e("Booking", "Masukkan Jadwal Booking Anda");
 
         timePicker = (TimePicker) findViewById(R.id.timePicker);

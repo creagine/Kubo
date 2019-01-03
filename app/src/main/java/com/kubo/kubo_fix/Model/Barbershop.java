@@ -5,14 +5,16 @@ public class Barbershop {
     private String Image;
     private String Nama;
     private String Alamat;
+    private String Phone;
 
     public Barbershop() {
     }
 
-    public Barbershop(String image, String nama, String alamat) {
+    public Barbershop(String image, String nama, String alamat, String phone) {
         Image = image;
         Nama = nama;
         Alamat = alamat;
+        Phone = phone;
     }
 
     public String getImage() {
@@ -37,5 +39,13 @@ public class Barbershop {
 
     public void setAlamat(String alamat) {
         Alamat = alamat;
+    }
+
+    public String getPhone() {
+        return Phone;
+    }
+
+    public void setPhone(String phone) {
+        Phone = phone;
     }
 }

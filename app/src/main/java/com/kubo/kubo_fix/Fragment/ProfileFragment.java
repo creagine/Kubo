@@ -18,19 +18,29 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.kubo.kubo_fix.LoginActivity;
+import com.kubo.kubo_fix.Model.User;
 import com.kubo.kubo_fix.R;
 import com.kubo.kubo_fix.SignUpActivity;
 
 public class ProfileFragment extends Fragment {
 
     private Button btnChangePassword, btnRemoveUser, changePassword, remove, signOut;
-    private TextView email;
+    private TextView email, fullname, phone;
     private EditText oldEmail, password, newPassword;
     private ProgressBar progressBar;
 
+    private String userId;
+
     private FirebaseAuth auth;
     private FirebaseAuth.AuthStateListener authListener;
+
+    private DatabaseReference userReference;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -48,7 +58,7 @@ public class ProfileFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
-//get firebase auth instance
+        //get firebase auth instance
         auth = FirebaseAuth.getInstance();
 
         //get current user
@@ -67,7 +77,10 @@ public class ProfileFragment extends Fragment {
                 } else {
 
                     email.setText("User Email: " + user.getEmail());
+                    userId = user.getUid();
 
+                    //get data user
+                    getData(userId);
                 }
             }
 
@@ -84,6 +97,8 @@ public class ProfileFragment extends Fragment {
         newPassword = (EditText) view.findViewById(R.id.newPassword);
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
         email = (TextView) view.findViewById(R.id.useremail);
+        fullname = (TextView) view.findViewById(R.id.textViewFullname);
+        phone = (TextView) view.findViewById(R.id.textViewPhone);
 
         oldEmail.setVisibility(View.GONE);
         password.setVisibility(View.GONE);
@@ -168,6 +183,31 @@ public class ProfileFragment extends Fragment {
         });
 
         return view;
+    }
+
+    public void getData(String userId){
+
+        userReference = FirebaseDatabase.getInstance().getReference("Users").child(userId);
+        userReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                User currentUser = dataSnapshot.getValue(User.class);
+
+                String name = currentUser.getName();
+                String initial = name.substring(0,1);
+
+                fullname.setText(initial);
+                phone.setText(currentUser.getPhone());
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
     //sign out method

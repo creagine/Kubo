@@ -6,5 +6,6 @@ public class Common {
     public static String barbermanSelected = "";
     public static String serviceSelected = "";
     public static String jadwalSelected = "";
+    public static String orderSelected = "";
 
 }

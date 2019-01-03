@@ -12,11 +12,16 @@ public class Order {
     private String totalharga;
     private String jadwal;
     private String status;
+    private String phoneBarbershop;
+    private String phoneUser;
+
 
     public Order() {
     }
 
-    public Order(String idOrder, String idUser, String atasnama, String idBarbershop, String namaBarbershop, String barberman, String service, String totalharga, String jadwal, String status) {
+    public Order(String idOrder, String idUser, String atasnama, String idBarbershop,
+                 String namaBarbershop, String barberman, String service, String totalharga,
+                 String jadwal, String status, String phoneBarbershop, String phoneUser) {
         this.idOrder = idOrder;
         this.idUser = idUser;
         this.atasnama = atasnama;
@@ -27,6 +32,8 @@ public class Order {
         this.totalharga = totalharga;
         this.jadwal = jadwal;
         this.status = status;
+        this.phoneBarbershop = phoneBarbershop;
+        this.phoneUser = phoneUser;
     }
 
     public String getIdOrder() {
@@ -107,5 +114,21 @@ public class Order {
 
     public void setIdUser(String idUser) {
         this.idUser = idUser;
+    }
+
+    public String getPhoneBarbershop() {
+        return phoneBarbershop;
+    }
+
+    public void setPhoneBarbershop(String phoneBarbershop) {
+        this.phoneBarbershop = phoneBarbershop;
+    }
+
+    public String getPhoneUser() {
+        return phoneUser;
+    }
+
+    public void setPhoneUser(String phoneUser) {
+        this.phoneUser = phoneUser;
     }
 }
