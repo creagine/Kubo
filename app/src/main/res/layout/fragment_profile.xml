@@ -1,10 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center">
+    android:gravity="center"
+    android:orientation="vertical">
 
+
+    <TextView
+        android:id="@+id/textViewFullname"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:background="@color/colorPrimary"
+        android:gravity="center"
+        android:text="Name"
+        android:textAlignment="center"
+        android:textColor="@color/btn_login_bg"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/useremail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/old_email"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:hint="@string/email_id"
+        android:textSize="30sp"
+        android:textStyle="bold|italic" />
+
+    <TextView
+        android:id="@+id/textViewPhone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="08123456789"
+        android:textAlignment="center"
+        android:textSize="16sp" />
 
     <EditText
         android:id="@+id/old_email"
@@ -17,8 +49,6 @@
         android:importantForAutofill="no"
         android:inputType="textEmailAddress"
         android:maxLines="1"
-        tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="82dp"
         tools:targetApi="o" />
 
     <EditText
@@ -34,8 +64,6 @@
         android:inputType="textPassword"
         android:maxLines="1"
         tools:ignore="RtlCompat"
-        tools:layout_editor_absoluteX="126dp"
-        tools:layout_editor_absoluteY="125dp"
         tools:targetApi="o" />
 
     <EditText
@@ -51,8 +79,6 @@
         android:inputType="textPassword"
         android:maxLines="1"
         tools:ignore="RtlCompat"
-        tools:layout_editor_absoluteX="106dp"
-        tools:layout_editor_absoluteY="168dp"
         tools:targetApi="o" />
 
     <Button
@@ -65,9 +91,7 @@
         android:background="@color/colorPrimaryDark"
         android:text="@string/btn_change"
         android:textColor="@android:color/white"
-        android:textStyle="bold"
-        tools:layout_editor_absoluteX="199dp"
-        tools:layout_editor_absoluteY="211dp" />
+        android:textStyle="bold"/>
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -89,9 +113,7 @@
         android:textColor="@android:color/white"
         android:textStyle="bold"
         android:visibility="gone"
-        tools:ignore="RtlCompat"
-        tools:layout_editor_absoluteX="199dp"
-        tools:layout_editor_absoluteY="259dp" />
+        tools:ignore="RtlCompat"/>
 
     <Button
         android:id="@+id/change_password_button"
@@ -116,9 +138,7 @@
         android:text="@string/remove_user"
         android:textStyle="bold"
         android:visibility="gone"
-        tools:ignore="RtlCompat"
-        tools:layout_editor_absoluteX="42dp"
-        tools:layout_editor_absoluteY="408dp" />
+        tools:ignore="RtlCompat"/>
 
     <Button
         android:id="@+id/sign_out"
@@ -130,20 +150,6 @@
         android:background="@color/colorPrimary"
         android:text="@string/btn_sign_out"
         android:textColor="@android:color/white"
-        android:textStyle="bold"
-        tools:layout_editor_absoluteX="42dp"
-        tools:layout_editor_absoluteY="456dp" />
+        android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/useremail"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/old_email"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="46dp"
-        android:gravity="center"
-        android:hint="@string/email_id"
-        android:textSize="30sp"
-        android:textStyle="bold|italic" />
-
-</RelativeLayout>
+</LinearLayout>

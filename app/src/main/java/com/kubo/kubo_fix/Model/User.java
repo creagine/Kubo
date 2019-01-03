@@ -4,42 +4,13 @@ public class User {
     private String Name;
     private String Password;
     private String Phone;
-    private String IsStaff;
-    private String secureCode;
-    private String homeAddress;
-
 
     public User() {
     }
 
-    public User(String name, String password, String secureCode) {
+    public User(String name, String password, String phone) {
         Name = name;
         Password = password;
-        IsStaff="false";
-        this.secureCode = secureCode;
-    }
-
-    public String getSecureCode() {
-        return secureCode;
-    }
-
-    public void setSecureCode(String secureCode) {
-        this.secureCode = secureCode;
-    }
-
-    public String getIsStaff() {
-        return IsStaff;
-    }
-
-    public void setIsStaff(String isStaff) {
-        IsStaff = isStaff;
-    }
-
-    public String getPhone() {
-        return Phone;
-    }
-
-    public void setPhone(String phone) {
         Phone = phone;
     }
 
@@ -59,11 +30,12 @@ public class User {
         Password = password;
     }
 
-    public String getHomeAddress() {
-        return homeAddress;
+    public String getPhone() {
+        return Phone;
     }
 
-    public void setHomeAddress(String homeAddress) {
-        this.homeAddress = homeAddress;
+    public void setPhone(String phone) {
+        Phone = phone;
     }
+
 }
