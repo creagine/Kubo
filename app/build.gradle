@@ -41,6 +41,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth:16.1.0'
     implementation 'com.google.firebase:firebase-config:16.1.2'
     implementation 'com.google.firebase:firebase-invites:16.0.6'
+    implementation 'com.google.firebase:firebase-messaging:16.0.5'
     implementation 'com.firebaseui:firebase-ui-database:3.2.1'
     implementation 'com.android.support:design:28.0.0'
     implementation 'com.android.support:gridlayout-v7:28.0.0'
@@ -56,6 +57,9 @@ dependencies {
     implementation 'com.github.ganfra:material-spinner:2.0.0'
 
     implementation 'com.squareup.picasso:picasso:2.5.2'
+
+    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
 
     implementation "android.arch.lifecycle:extensions:1.1.1"
     annotationProcessor "android.arch.lifecycle:compiler:1.1.1"

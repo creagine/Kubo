@@ -16,6 +16,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.kubo.kubo_fix.Common.Common;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -38,6 +39,7 @@ public class LoginActivity extends AppCompatActivity {
         //Get Firebase uth instance
         mAuth = FirebaseAuth.getInstance();
         if (mAuth.getCurrentUser() != null) {
+            Common.currentUser = mAuth.getCurrentUser().getUid();
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
             finish();
         }
@@ -104,6 +106,7 @@ public class LoginActivity extends AppCompatActivity {
                                         Toast.makeText(LoginActivity.this, getString(R.string.auth_failed), Toast.LENGTH_LONG).show();
                                     }
                                 } else {
+                                    Common.currentUser = mAuth.getCurrentUser().getUid();
                                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                     startActivity(intent);
                                     finish();

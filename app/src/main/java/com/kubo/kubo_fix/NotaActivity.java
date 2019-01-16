@@ -19,9 +19,18 @@ import com.google.firebase.database.ValueEventListener;
 import com.kubo.kubo_fix.Common.Common;
 import com.kubo.kubo_fix.Model.Barberman;
 import com.kubo.kubo_fix.Model.Barbershop;
+import com.kubo.kubo_fix.Model.MyResponse;
+import com.kubo.kubo_fix.Model.Notification;
 import com.kubo.kubo_fix.Model.Order;
+import com.kubo.kubo_fix.Model.Sender;
 import com.kubo.kubo_fix.Model.Service;
+import com.kubo.kubo_fix.Model.Token;
 import com.kubo.kubo_fix.Model.User;
+import com.kubo.kubo_fix.Remote.APIService;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class NotaActivity extends AppCompatActivity {
 
@@ -40,6 +49,8 @@ public class NotaActivity extends AppCompatActivity {
     String atasnama, userId, totalharga, jadwal, barberman, service, barbershop, phoneBarbershop,
             phoneUser;
 
+    APIService mService;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +58,9 @@ public class NotaActivity extends AppCompatActivity {
 
         setTitle("Order List Anda");
         Log.e("Nota", "Order List");
+
+        //Init FCM Service buat notif
+        mService = Common.getFCMService();
 
         //memulai firebase database
         mFirebaseInstance = FirebaseDatabase.getInstance();
@@ -113,6 +127,10 @@ public class NotaActivity extends AppCompatActivity {
 
         orderReference.child(Common.barbershopSelected).child(idOrder).setValue(orderdata);
         usersOrderReference.child(userId).child(idOrder).setValue(orderdata);
+
+//        sendNotificationOrder(userId);
+
+        sendOrderStatusToUser(Common.barbershopSelected,orderdata);
 
     }
 
@@ -222,6 +240,98 @@ public class NotaActivity extends AppCompatActivity {
                 });
 
     }
+
+    private void sendOrderStatusToUser(final String key,final Order order) {
+
+        DatabaseReference tokens = mFirebaseInstance.getReference("Tokens");
+
+        tokens.orderByKey().equalTo(order.getIdBarbershop())
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot postSnapShot:dataSnapshot.getChildren())
+                        {
+                            Token token = postSnapShot.getValue(Token.class);
+
+                            //Make raw payload
+//                            Notification notification = new Notification("Kubo","Your order "+key+" was updated");
+                            Notification notification = new Notification("detail notif","New Order " + order.getAtasnama());
+                            Sender content = new Sender(token.getToken(),notification);
+
+                            mService.sendNotification(content)
+                                    .enqueue(new Callback<MyResponse>() {
+                                        @Override
+                                        public void onResponse(Call<MyResponse> call, Response<MyResponse> response) {
+                                            if (response.code() == 200) {
+                                                if (response.body().success == 1) {
+                                                    Toast.makeText(NotaActivity.this, "Order was updated !", Toast.LENGTH_SHORT).show();
+                                                } else {
+                                                    Toast.makeText(NotaActivity.this, "Order was updated but failed to send notification !", Toast.LENGTH_SHORT).show();
+                                                }
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onFailure(Call<MyResponse> call, Throwable t) {
+                                            Log.e("ERROR",t.getMessage());
+                                        }
+                                    });
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+    }
+
+//    private void sendNotificationOrder(final String order_number) {
+//
+//        DatabaseReference tokens = FirebaseDatabase.getInstance().getReference("Tokens");
+//
+//        Query data = tokens.orderByChild("serverToken").equalTo(true); //get all node with isServerToken is true
+//
+//        data.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                for (DataSnapshot postSnapshot:dataSnapshot.getChildren())
+//                {
+//                    Token serverToken = postSnapshot.getValue(Token.class);
+//
+//                    //Create raw payload to send
+//                    Notification notification = new Notification("Expreshoes","You have new order "+order_number);
+//                    Sender content = new Sender(serverToken.getToken(),notification);
+//
+//                    mService.sendNotification(content)
+//                            .enqueue(new Callback<MyResponse>() {
+//                                @Override
+//                                public void onResponse(Call<MyResponse> call, Response<MyResponse> response) {
+//                                    //only run when get result
+//                                    if (response.code() == 200) {
+//                                        if (response.body().success == 1) {
+//                                            Toast.makeText(NotaActivity.this, "Thank you , Order Place", Toast.LENGTH_LONG).show();
+//                                        } else {
+//                                            Toast.makeText(NotaActivity.this, "Failed !!!", Toast.LENGTH_SHORT).show();
+//                                        }
+//                                    }
+//                                }
+//                                @Override
+//                                public void onFailure(Call<MyResponse> call, Throwable t) {
+//                                    Log.e("ERROR",t.getMessage());
+//                                }
+//                            });
+//
+//                }
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
+//    }
 
 }
 

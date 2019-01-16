@@ -12,11 +12,15 @@ import android.view.ViewGroup;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.kubo.kubo_fix.BarbershopActivity;
 import com.kubo.kubo_fix.Common.Common;
 import com.kubo.kubo_fix.Interface.ItemClickListener;
 import com.kubo.kubo_fix.Model.Barbershop;
+import com.kubo.kubo_fix.Model.Token;
 import com.kubo.kubo_fix.R;
 import com.kubo.kubo_fix.ViewHolder.BarbershopViewHolder;
 import com.squareup.picasso.Picasso;
@@ -45,7 +49,12 @@ public class HomeFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recycler_barbershop);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
+        FirebaseMessaging.getInstance().subscribeToTopic("notifications");
+
         loadBarbershop();
+
+        //to add your token when login app
+        updateToken(FirebaseInstanceId.getInstance().getToken());
 
         return view;
     }
@@ -100,6 +109,13 @@ public class HomeFragment extends Fragment {
         adapter.startListening();
         recyclerView.setAdapter(adapter);
 
+    }
+
+    private void updateToken(String token) {
+        FirebaseDatabase db = FirebaseDatabase.getInstance();
+        DatabaseReference tokens = db.getReference("Tokens");
+        Token data = new Token(token,false); //false because this token from client app
+        tokens.child(Common.currentUser).setValue(data);
     }
 
     @Override
