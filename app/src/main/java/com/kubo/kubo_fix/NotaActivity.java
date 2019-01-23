@@ -255,7 +255,7 @@ public class NotaActivity extends AppCompatActivity {
 
                             //Make raw payload
 //                            Notification notification = new Notification("Kubo","Your order "+key+" was updated");
-                            Notification notification = new Notification("detail notif","New Order " + order.getAtasnama());
+                            Notification notification = new Notification("Click here to check","New Order from: " + order.getAtasnama());
                             Sender content = new Sender(token.getToken(),notification);
 
                             mService.sendNotification(content)
@@ -285,53 +285,6 @@ public class NotaActivity extends AppCompatActivity {
                     }
                 });
     }
-
-//    private void sendNotificationOrder(final String order_number) {
-//
-//        DatabaseReference tokens = FirebaseDatabase.getInstance().getReference("Tokens");
-//
-//        Query data = tokens.orderByChild("serverToken").equalTo(true); //get all node with isServerToken is true
-//
-//        data.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                for (DataSnapshot postSnapshot:dataSnapshot.getChildren())
-//                {
-//                    Token serverToken = postSnapshot.getValue(Token.class);
-//
-//                    //Create raw payload to send
-//                    Notification notification = new Notification("Expreshoes","You have new order "+order_number);
-//                    Sender content = new Sender(serverToken.getToken(),notification);
-//
-//                    mService.sendNotification(content)
-//                            .enqueue(new Callback<MyResponse>() {
-//                                @Override
-//                                public void onResponse(Call<MyResponse> call, Response<MyResponse> response) {
-//                                    //only run when get result
-//                                    if (response.code() == 200) {
-//                                        if (response.body().success == 1) {
-//                                            Toast.makeText(NotaActivity.this, "Thank you , Order Place", Toast.LENGTH_LONG).show();
-//                                        } else {
-//                                            Toast.makeText(NotaActivity.this, "Failed !!!", Toast.LENGTH_SHORT).show();
-//                                        }
-//                                    }
-//                                }
-//                                @Override
-//                                public void onFailure(Call<MyResponse> call, Throwable t) {
-//                                    Log.e("ERROR",t.getMessage());
-//                                }
-//                            });
-//
-//                }
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
-//    }
 
 }
 

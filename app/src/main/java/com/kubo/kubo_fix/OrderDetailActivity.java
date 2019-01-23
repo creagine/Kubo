@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -21,7 +22,16 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.kubo.kubo_fix.Common.Common;
+import com.kubo.kubo_fix.Model.MyResponse;
+import com.kubo.kubo_fix.Model.Notification;
 import com.kubo.kubo_fix.Model.Order;
+import com.kubo.kubo_fix.Model.Sender;
+import com.kubo.kubo_fix.Model.Token;
+import com.kubo.kubo_fix.Remote.APIService;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class OrderDetailActivity extends AppCompatActivity {
 
@@ -40,12 +50,17 @@ public class OrderDetailActivity extends AppCompatActivity {
     String idOrder, idUser, atasnama, totalharga, idBarbershop, jadwal, barberman, service,
             barbershop, status, phoneBarbershop, phoneUser;
 
+    APIService mService;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_detail);
 
         setTitle("Detail order");
+
+        //Init FCM Service buat notif
+        mService = Common.getFCMService();
 
         //ngecek di node Barbershop, id user yg sudah login sudah ada apa belum
         //get current user
@@ -76,14 +91,29 @@ public class OrderDetailActivity extends AppCompatActivity {
                 orderReference = mFirebaseInstance.getReference("Order");
                 // get reference to 'usersorder'
                 usersOrderReference = mFirebaseInstance.getReference("UsersOrder");
+                // get reference to 'orderhistory'
+                orderHistoryReference = mFirebaseInstance.getReference("OrderHistory");
+                // get reference to 'usersorderhistory'
+                usersOrderHistoryReference = mFirebaseInstance.getReference("UsersOrderHistory");
+
+                status = "Order Cancelled";
+
+                Order cancelOrder = new Order(idOrder, idUser, atasnama, idBarbershop, barbershop,
+                        barberman, service, totalharga, jadwal, status, phoneBarbershop, phoneUser);
+
+                //data diisi ke order history (seperti seakan2 dipindah)
+                orderHistoryReference.child(idBarbershop).child(Common.orderSelected).setValue(cancelOrder);
+                usersOrderHistoryReference.child(idUser).child(Common.orderSelected).setValue(cancelOrder);
 
                 orderReference.child(idBarbershop).child(Common.orderSelected).removeValue();
                 usersOrderReference.child(idUser).child(Common.orderSelected).removeValue();
 
+                sendOrderStatusToUser(Common.orderSelected,cancelOrder);
+
                 Intent intent = new Intent(OrderDetailActivity.this, MainActivity.class);
 
                 Toast.makeText(OrderDetailActivity.this,
-                        "Order cancelled",
+                        "Order cancelled, moved to order history",
                         Toast.LENGTH_LONG).show();
 
                 startActivity(intent);
@@ -163,6 +193,50 @@ public class OrderDetailActivity extends AppCompatActivity {
                     }
                 });
 
+    }
+
+    private void sendOrderStatusToUser(final String key,final Order order) {
+
+        DatabaseReference tokens = mFirebaseInstance.getReference("Tokens");
+
+        tokens.orderByKey().equalTo(order.getIdBarbershop())
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot postSnapShot:dataSnapshot.getChildren())
+                        {
+                            Token token = postSnapShot.getValue(Token.class);
+
+                            //Make raw payload
+                            Notification notification = new Notification("Click here to check",order.getStatus());
+                            Sender content = new Sender(token.getToken(),notification);
+
+                            mService.sendNotification(content)
+                                    .enqueue(new Callback<MyResponse>() {
+                                        @Override
+                                        public void onResponse(Call<MyResponse> call, Response<MyResponse> response) {
+                                            if (response.code() == 200) {
+                                                if (response.body().success == 1) {
+                                                    Toast.makeText(OrderDetailActivity.this, "Order was updated !", Toast.LENGTH_SHORT).show();
+                                                } else {
+                                                    Toast.makeText(OrderDetailActivity.this, "Order was updated but failed to send notification !", Toast.LENGTH_SHORT).show();
+                                                }
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onFailure(Call<MyResponse> call, Throwable t) {
+                                            Log.e("ERROR",t.getMessage());
+                                        }
+                                    });
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
     }
 
 }

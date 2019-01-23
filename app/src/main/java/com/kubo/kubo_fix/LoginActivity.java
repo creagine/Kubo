@@ -36,7 +36,8 @@ public class LoginActivity extends AppCompatActivity {
         bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, INPUT_SERVICE );
         bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "image");
         mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
-        //Get Firebase uth instance
+
+        //Get Firebase auth instance
         mAuth = FirebaseAuth.getInstance();
         if (mAuth.getCurrentUser() != null) {
             Common.currentUser = mAuth.getCurrentUser().getUid();
